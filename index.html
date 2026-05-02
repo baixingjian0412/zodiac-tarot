@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>星灵指引 | 星座·塔罗·灵数</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Canvas 星空背景（高级粒子系统） -->
+
+  <!-- ====== 开场动画 ====== -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-content">
+      <div class="splash-logo">
+        <div class="splash-star">✦</div>
+        <svg class="splash-orbit" viewBox="0 0 120 120" width="120" height="120">
+          <circle cx="60" cy="60" r="50" class="orbit-ring orbit-1" />
+          <circle cx="60" cy="60" r="38" class="orbit-ring orbit-2" />
+          <circle cx="110" cy="60" r="3" class="orbit-dot dot-1" />
+          <circle cx="10" cy="60" r="2.5" class="orbit-dot dot-2" />
+          <circle cx="60" cy="10" r="2" class="orbit-dot dot-3" />
+          <circle cx="60" cy="110" r="2" class="orbit-dot dot-4" />
+        </svg>
+      </div>
+      <h1 class="splash-title">星灵指引</h1>
+      <p class="splash-subtitle">星座 · 塔罗 · 灵数</p>
+      <div class="splash-loader">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 顶部导航 ====== -->
+  <nav class="top-nav">
+    <div class="nav-brand" onclick="navigateTo('home')">✦ 星灵指引</div>
+    <div class="nav-links">
+      <button class="nav-btn" onclick="navigateTo('zodiac')" data-page="zodiac">♈ 星座</button>
+      <button class="nav-btn" onclick="navigateTo('tarot')" data-page="tarot">🃏 塔罗</button>
+      <button class="nav-btn" onclick="navigateTo('numerology')" data-page="numerology">🔮 灵数</button>
+    </div>
+  </nav>
+
+  <!-- ====== 首页 ====== -->
+  <div id="page-home" class="page active">
+    <div class="home-hero">
+      <h1 class="home-title">✦ 星灵指引 ✦</h1>
+      <p class="home-subtitle">星座运势 · 塔罗占卜 · 生命灵数</p>
+      <div class="ai-status-note" id="aiStatusNote">
+        <span>🤖 AI 已就绪</span>
+      </div>
+    </div>
+    <div class="home-cards">
+      <div class="home-card" onclick="navigateTo('zodiac')">
+        <div class="home-card-icon">♈</div>
+        <div class="home-card-name">星座运势</div>
+        <div class="home-card-desc">十二星座每日运势，洞悉星辰的指引</div>
+      </div>
+      <div class="home-card" onclick="navigateTo('tarot')">
+        <div class="home-card-icon">🃏</div>
+        <div class="home-card-name">塔罗占卜</div>
+        <div class="home-card-desc">抽取命运之牌，解锁神秘力量的启示</div>
+      </div>
+      <div class="home-card" onclick="navigateTo('numerology')">
+        <div class="home-card-icon">🔮</div>
+        <div class="home-card-name">生命灵数</div>
+        <div class="home-card-desc">出生日期揭示你的人生密码</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 星座页面 ====== -->
+  <div id="page-zodiac" class="page">
+    <div class="page-header">
+      <button class="back-btn" onclick="navigateTo('home')">← 返回</button>
+      <h2>♈ 星座运势</h2>
+    </div>
+    <div class="zodiac-subnav">
+      <button class="z-sub-btn active" onclick="switchZodiacTab('detail')" data-ztab="detail">📖 星座详情</button>
+      <button class="z-sub-btn" onclick="switchZodiacTab('compat')" data-ztab="compat">💞 星座配对</button>
+      <button class="z-sub-btn" onclick="switchZodiacTab('rank')" data-ztab="rank">🏆 今日排行</button>
+    </div>
+    <div class="container">
+
+      <!-- 详情 -->
+      <div id="ztab-detail" class="ztab active">
+        <p class="page-hint">选择你的星座，查看完整解析</p>
+        <div class="zodiac-grid" id="zodiacGrid"></div>
+        <div id="signDetail"></div>
+      </div>
+
+      <!-- 配对 -->
+      <div id="ztab-compat" class="ztab">
+        <p class="page-hint">选择你们的星座和性别，查看缘分指数</p>
+        <div class="compat-pickers">
+          <div class="compat-side">
+            <div class="compat-pick" id="compatPick1" onclick="openCompatPicker(1)">
+              <span class="cp-symbol">?</span>
+              <span class="cp-name">选择星座</span>
+            </div>
+            <div class="gender-btns">
+              <button class="gender-btn active" data-gender="M" onclick="setGender(1,'M')">♂ 男</button>
+              <button class="gender-btn" data-gender="F" onclick="setGender(1,'F')">♀ 女</button>
+            </div>
+          </div>
+          <div class="compat-heart">💞</div>
+          <div class="compat-side">
+            <div class="compat-pick" id="compatPick2" onclick="openCompatPicker(2)">
+              <span class="cp-symbol">?</span>
+              <span class="cp-name">选择星座</span>
+            </div>
+            <div class="gender-btns">
+              <button class="gender-btn active" data-gender="M" onclick="setGender(2,'M')">♂ 男</button>
+              <button class="gender-btn" data-gender="F" onclick="setGender(2,'F')">♀ 女</button>
+            </div>
+          </div>
+        </div>
+        <button class="btn-full" onclick="calcCompatibility()">✨ 查看配对指数</button>
+        <div id="compatResult"></div>
+        <!-- 配对选择弹窗 -->
+        <div class="compat-modal" id="compatModal" style="display:none">
+          <div class="compat-modal-content">
+            <div class="compat-modal-header">
+              <span>选择星座</span>
+              <button class="modal-close" onclick="closeCompatPicker()">✕</button>
+            </div>
+            <div class="compat-modal-grid" id="compatModalGrid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 排行 -->
+      <div id="ztab-rank" class="ztab">
+        <p class="page-hint" id="rankDate">今日星座运势排行榜</p>
+        <div id="rankResult"><div class="ai-loading"><span class="loading-spinner">✦</span> 正在计算今日排行...</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== 塔罗页面 ====== -->
+  <div id="page-tarot" class="page">
+    <div class="page-header">
+      <button class="back-btn" onclick="navigateTo('home')">← 返回</button>
+      <h2>🃏 塔罗占卜</h2>
+    </div>
+    <div class="tarot-subnav">
+      <button class="z-sub-btn active" onclick="switchTarotTab('draw')" data-ttab="draw">🎴 抽牌占卜</button>
+      <button class="z-sub-btn" onclick="switchTarotTab('library')" data-ttab="library">📚 牌库大全</button>
+      <button class="z-sub-btn" onclick="switchTarotTab('daily')" data-ttab="daily">🌅 今日塔罗</button>
+    </div>
+    <div class="container">
+
+      <!-- 抽牌占卜 -->
+      <div id="ttab-draw" class="ztab active">
+        <p class="page-hint">选择牌阵，点击牌堆抽取你的命运之牌</p>
+        <!-- 牌阵选择器 -->
+        <div class="spread-selector">
+          <button class="spread-btn active" data-spread="single" onclick="selectSpread('single')">
+            <span class="spread-icon">🎴</span>
+            <span class="spread-name">单张指引</span>
+            <span class="spread-desc">每日灵感</span>
+          </button>
+          <button class="spread-btn" data-spread="three" onclick="selectSpread('three')">
+            <span class="spread-icon">🃏</span>
+            <span class="spread-name">三张牌阵</span>
+            <span class="spread-desc">过去·现在·未来</span>
+          </button>
+          <button class="spread-btn" data-spread="love" onclick="selectSpread('love')">
+            <span class="spread-icon">🔥</span>
+            <span class="spread-name">爱情十字</span>
+            <span class="spread-desc">缘分占卜</span>
+          </button>
+          <button class="spread-btn" data-spread="career" onclick="selectSpread('career')">
+            <span class="spread-icon">💼</span>
+            <span class="spread-name">事业金字塔</span>
+            <span class="spread-desc">前程指引</span>
+          </button>
+          <button class="spread-btn" data-spread="yesno" onclick="selectSpread('yesno')">
+            <span class="spread-icon">✅</span>
+            <span class="spread-name">是非占卜</span>
+            <span class="spread-desc">答案之牌</span>
+          </button>
+        </div>
+        <!-- 牌阵布局示意 + 抽牌区 -->
+        <div class="spread-layout" id="spreadLayout">
+          <div class="spread-positions" id="spreadPositions"></div>
+        </div>
+        <div class="tarot-fan-wrapper" id="tarotFanWrapper">
+          <div class="tarot-fan" id="tarotFan"></div>
+        </div>
+        <div class="tarot-actions">
+          <button class="btn btn-primary" id="drawBtn">🎴 抽牌</button>
+        </div>
+        <div id="tarotResult"></div>
+      </div>
+
+      <!-- 牌库大全 -->
+      <div id="ttab-library" class="ztab">
+        <p class="page-hint">点击任意牌，查看详细含义</p>
+        <div class="tarot-library-grid" id="tarotLibrary"></div>
+        <!-- 牌详解弹窗 -->
+        <div class="compat-modal" id="cardDetailModal" style="display:none">
+          <div class="compat-modal-content card-detail-content">
+            <div class="compat-modal-header">
+              <span id="cardDetailTitle">牌面详情</span>
+              <button class="modal-close" onclick="closeCardDetail()">✕</button>
+            </div>
+            <div id="cardDetailBody"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 今日塔罗 -->
+      <div id="ttab-daily" class="ztab">
+        <p class="page-hint">今日命运之牌已为你揭晓</p>
+        <div id="dailyTarotResult"></div>
+        <button class="btn-full" onclick="refreshDailyTarot()" style="margin-top:16px">🔄 重新抽牌</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== 生命灵数页面 ====== -->
+  <div id="page-numerology" class="page">
+    <div class="page-header">
+      <button class="back-btn" onclick="navigateTo('home')">← 返回</button>
+      <h2>🔮 生命灵数</h2>
+    </div>
+    <div class="container">
+      <p class="page-hint">输入出生日期，计算你的生命数字</p>
+      <div class="numerology-form">
+        <div class="form-group">
+          <label>📅 选择出生日期</label>
+          <input type="date" id="birthDate">
+        </div>
+        <button class="btn-full" onclick="calcNumerology()">✨ 计算生命灵数</button>
+      </div>
+      <div id="numResult"></div>
+    </div>
+  </div>
+
+  <!-- 配置 & API -->
+  <script src="config.js"></script>
+  <script src="api.js"></script>
+  <script src="bg-canvas.js"></script>
+
+  <!-- 数据 & 逻辑 -->
+  <script src="data/zodiac.js"></script>
+  <script src="data/tarot.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
